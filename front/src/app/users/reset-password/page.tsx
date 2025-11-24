@@ -46,8 +46,12 @@ export default function ResetPasswordPage() {
       }
       alert('이메일 전송 완료');
       setStep(2);
-    } catch (err: any) {
-      alert(err.message || '이메일 전송 실패');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('이메일 전송 실패');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -81,8 +85,12 @@ export default function ResetPasswordPage() {
       }
       alert('비밀번호 재설정 완료');
       router.push('/users/login');
-    } catch (err: any) {
-      alert(err.message || '비밀번호 재설정 실패');
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('비밀번호 재설정 실패');
+      }
     } finally {
       setIsLoading(false);
     }

@@ -91,8 +91,12 @@ export default function MyPage() {
       //  비밀번호 변경 후 로그아웃 처리
       localStorage.removeItem('token');
       router.push('/users/login');
-    } catch (err: any) {
-      alert(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        alert(err.message);
+      } else {
+        alert('비밀번호 변경 실패');
+      }
     } finally {
       resetPasswordForm();
       setIsPasswordForm(false);
