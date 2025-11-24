@@ -1,0 +1,15 @@
+# 기본 무시 폴더
+node_modules/
+build/
+dist/
+public/
+.next/
+out/
+coverage/
+
+# 무시 파일
+*.min.js
+*.log
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
