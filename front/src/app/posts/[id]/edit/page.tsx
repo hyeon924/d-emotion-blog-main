@@ -30,7 +30,7 @@ export default function PostEditPage() {
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [id, API_BASE_URL]);
 
   const handleUpdate = async (newTitle: string, newContent: string, newEmotion: string) => {
     const token = localStorage.getItem('token');
