@@ -23,7 +23,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: ${SPRING_MAIL_USERNAME}
-    password: ${SPRING_MAIL_PASSWORD}   # 공백 제거! (Gmail 앱 비밀번호는 띄어쓰기 없는 16자리)
+    password: ${SPRING_MAIL_PASSWORD}
     properties:
       mail:
         smtp:
@@ -47,3 +47,9 @@ logging:
     org.hibernate.orm.jdbc.bind: TRACE
     org.hibernate.orm.jdbc.extract: TRACE
     org.springframework.transaction.interceptor: TRACE
+
+cors:
+  allowed:
+    origins:
+      - http://localhost:3000
+      - https://*.vercel.app
