@@ -22,6 +22,11 @@ export default function ResetPasswordPage() {
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  // 환경 변수 검증
+  if (!API_BASE_URL) {
+    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+  }
+
   const handleLoginPage = () => {
     console.log('로그인 페이지로 이동');
     router.push('/users/login');
@@ -31,6 +36,10 @@ export default function ResetPasswordPage() {
   const handleSendCode = async () => {
     if (!email) {
       alert('이메일을 입력해주세요.');
+      return;
+    }
+    if (!API_BASE_URL) {
+      alert('API 서버 URL이 설정되지 않았습니다. 환경 변수를 확인해주세요.');
       return;
     }
     try {
@@ -66,6 +75,11 @@ export default function ResetPasswordPage() {
 
     if (newPassword !== confirmPassword) {
       alert('새 비밀번호와 확인 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    if (!API_BASE_URL) {
+      alert('API 서버 URL이 설정되지 않았습니다. 환경 변수를 확인해주세요.');
       return;
     }
 
