@@ -21,6 +21,10 @@ export default function PostDetailPage() {
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  if (!API_BASE_URL) {
+    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+  }
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (!token) {

@@ -20,6 +20,10 @@ export default function SignupPage() {
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
+  if (!API_BASE_URL) {
+    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+  }
+
   // username은 emailId와 domainSelect/customDomain을 합쳐서 관리
   // 기존 username 관련 인풋/로직 제거
 
