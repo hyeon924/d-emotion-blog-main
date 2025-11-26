@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import localFont from 'next/font/local';
 import './globals.css';
+import PageLoader from './components/PageLoader';
+import { Suspense } from 'react';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -34,6 +36,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} ${bmjua.variable} antialiased`}>
+        <Suspense fallback={null}>
+          <PageLoader />
+        </Suspense>
         {children}
       </body>
     </html>

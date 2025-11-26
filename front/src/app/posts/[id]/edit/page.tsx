@@ -3,12 +3,14 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import PostForm from '@/app/components/PostForm';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function PostEditPage() {
   const { id } = useParams();
   const router = useRouter();
 
   const [loading, setLoading] = useState(true);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -38,6 +40,7 @@ export default function PostEditPage() {
 
   const handleUpdate = async (newTitle: string, newContent: string, newEmotion: string) => {
     const token = localStorage.getItem('token');
+    setIsSubmitting(true);
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/posts/${id}`, {
@@ -62,19 +65,39 @@ export default function PostEditPage() {
       }
     } catch {
       alert('서버 오류');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  if (loading) return <div className="p-4 text-sm sm:text-base">로딩 중...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <LoadingSpinner size="lg" />
+          <p className="text-gray-700 font-medium">로딩 중...</p>
+        </div>
+      </div>
+    );
   if (error) return <div className="p-4 text-red-500 text-sm sm:text-base">{error}</div>;
 
   return (
-    <PostForm
-      mode="edit"
-      initialTitle={title}
-      initialContent={content}
-      initialEmotion={emotion}
-      onSubmit={handleUpdate}
-    />
+    <>
+      {isSubmitting && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-8 shadow-xl flex flex-col items-center gap-4">
+            <LoadingSpinner size="lg" />
+            <p className="text-gray-700 font-medium">수정 중...</p>
+          </div>
+        </div>
+      )}
+      <PostForm
+        mode="edit"
+        initialTitle={title}
+        initialContent={content}
+        initialEmotion={emotion}
+        onSubmit={handleUpdate}
+      />
+    </>
   );
 }

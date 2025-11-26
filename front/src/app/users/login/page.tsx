@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -11,6 +12,7 @@ export default function LoginPage() {
   const [domainSelect, setDomainSelect] = useState('');
   const [customDomain, setCustomDomain] = useState('');
   const [showCustomDomain, setShowCustomDomain] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const domainOptions = ['gmail.com', 'naver.com', 'daum.net', '직접 입력'];
   const customDomainInputRef = useRef<HTMLInputElement>(null);
 
@@ -23,6 +25,12 @@ export default function LoginPage() {
   }
 
   const handleLogin = async () => {
+    if (!username || !password) {
+      alert('이메일과 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/users/login`, {
         method: 'POST',
@@ -35,6 +43,8 @@ export default function LoginPage() {
       router.push('/posts');
     } catch (error) {
       alert('로그인 실패');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -164,9 +174,17 @@ export default function LoginPage() {
 
         <button
           onClick={handleLogin}
-          className="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 sm:py-3 rounded transition text-sm sm:text-base"
+          disabled={isLoading}
+          className="w-full bg-blue-500 hover:bg-blue-600 disabled:bg-blue-300 disabled:cursor-not-allowed text-white font-semibold py-2 sm:py-3 rounded transition text-sm sm:text-base flex items-center justify-center gap-2"
         >
-          로그인
+          {isLoading ? (
+            <>
+              <LoadingSpinner size="sm" />
+              <span>로그인 중...</span>
+            </>
+          ) : (
+            '로그인'
+          )}
         </button>
 
         <div className="text-center">

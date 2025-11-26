@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function SignupPage() {
   const router = useRouter();
@@ -14,6 +15,8 @@ export default function SignupPage() {
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [sendComplete, setSendComplete] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSendingCode, setIsSendingCode] = useState(false);
   const [username, setUsername] = useState('');
   const [nickname, setNickname] = useState('');
   const customDomainInputRef = useRef<HTMLInputElement>(null);
@@ -77,6 +80,7 @@ export default function SignupPage() {
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
 
     try {
       const res = await fetch(`${API_BASE_URL}/users/signup`, {
@@ -98,10 +102,17 @@ export default function SignupPage() {
       router.push('/users/login');
     } catch {
       setError('서버 오류');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleSendCode = async () => {
+    if (!username) {
+      alert('이메일을 입력해주세요.');
+      return;
+    }
+    setIsSendingCode(true);
     try {
       const response = await fetch(
         `${API_BASE_URL}/email/request-verification-code?email=${username}`,
@@ -117,6 +128,8 @@ export default function SignupPage() {
     } catch (error) {
       alert('이메일 전송 실패');
       // console.error(error);
+    } finally {
+      setIsSendingCode(false);
     }
   };
 
@@ -180,11 +193,20 @@ export default function SignupPage() {
               {/* 인증번호 받기 버튼 - 모바일에서는 전체 너비 */}
               <button
                 type="button"
-                className="w-full sm:w-auto bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600 transition font-medium whitespace-nowrap"
+                className="w-full sm:w-auto bg-green-500 text-white text-sm px-4 py-2 rounded hover:bg-green-600 transition font-medium whitespace-nowrap disabled:bg-green-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 onClick={handleSendCode}
-                disabled={sendComplete}
+                disabled={sendComplete || isSendingCode}
               >
-                {sendComplete ? '전송완료' : '인증번호 받기'}
+                {isSendingCode ? (
+                  <>
+                    <LoadingSpinner size="sm" />
+                    <span>전송 중...</span>
+                  </>
+                ) : sendComplete ? (
+                  '전송완료'
+                ) : (
+                  '인증번호 받기'
+                )}
               </button>
             </div>
           </div>
@@ -225,9 +247,17 @@ export default function SignupPage() {
           <div className="flex justify-center sm:justify-end mt-6">
             <button
               type="submit"
-              className="w-full sm:w-auto bg-green-500 text-white text-sm sm:text-base px-6 py-2 sm:py-3 rounded hover:bg-green-600 transition font-semibold shadow"
+              disabled={isLoading}
+              className="w-full sm:w-auto bg-green-500 text-white text-sm sm:text-base px-6 py-2 sm:py-3 rounded hover:bg-green-600 transition font-semibold shadow disabled:bg-green-300 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              회원가입
+              {isLoading ? (
+                <>
+                  <LoadingSpinner size="sm" />
+                  <span>처리 중...</span>
+                </>
+              ) : (
+                '회원가입'
+              )}
             </button>
           </div>
 

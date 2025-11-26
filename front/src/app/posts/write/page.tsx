@@ -1,10 +1,13 @@
 'use client';
 
+import { useState } from 'react';
 import PostForm from '@/app/components/PostForm';
 import { useRouter } from 'next/navigation';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 export default function PostWritePage() {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -14,6 +17,7 @@ export default function PostWritePage() {
 
   const handleSubmit = async (title: string, content: string, emotion: string) => {
     const token = localStorage.getItem('token');
+    setIsLoading(true);
 
     try {
       const res = await fetch(`${API_BASE_URL}/api/v1/posts`, {
@@ -33,16 +37,28 @@ export default function PostWritePage() {
       }
     } catch {
       alert('서버 오류');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <PostForm
-      mode="create"
-      initialTitle=""
-      initialContent=""
-      initialEmotion="happy"
-      onSubmit={handleSubmit}
-    />
+    <>
+      {isLoading && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 z-50 flex items-center justify-center">
+          <div className="bg-white rounded-lg p-8 shadow-xl flex flex-col items-center gap-4">
+            <LoadingSpinner size="lg" />
+            <p className="text-gray-700 font-medium">작성 중...</p>
+          </div>
+        </div>
+      )}
+      <PostForm
+        mode="create"
+        initialTitle=""
+        initialContent=""
+        initialEmotion="happy"
+        onSubmit={handleSubmit}
+      />
+    </>
   );
 }
