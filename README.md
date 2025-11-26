@@ -55,3 +55,5 @@ Docker 기반 실행, 테스트 코드 포함을 목표로 개발되었습니다
 
 ## 배포 URL
 - https://d-emotion-blog-main.vercel.app/users/login
+- 테스트 계정 (test@test.com / test)
+- 무료 호스팅으로 속도가 느린 점 양해 부탁드립니다.
