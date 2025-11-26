@@ -24,11 +24,11 @@ export default function ResetPasswordPage() {
 
   // 환경 변수 검증
   if (!API_BASE_URL) {
-    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+    // console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
   }
 
   const handleLoginPage = () => {
-    console.log('로그인 페이지로 이동');
+    // console.log('로그인 페이지로 이동');
     router.push('/users/login');
   };
 

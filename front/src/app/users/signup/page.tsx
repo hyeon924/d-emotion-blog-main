@@ -21,7 +21,7 @@ export default function SignupPage() {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!API_BASE_URL) {
-    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+    // console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
   }
 
   // username은 emailId와 domainSelect/customDomain을 합쳐서 관리
@@ -116,7 +116,7 @@ export default function SignupPage() {
       setTimeout(() => setSendComplete(false), 5000);
     } catch (error) {
       alert('이메일 전송 실패');
-      console.error(error);
+      // console.error(error);
     }
   };
 

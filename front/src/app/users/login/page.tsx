@@ -19,7 +19,7 @@ export default function LoginPage() {
   // console.log('API_BASE_URL >>>', API_BASE_URL);
 
   if (!API_BASE_URL) {
-    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+    // console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
   }
 
   const handleLogin = async () => {
@@ -86,12 +86,12 @@ export default function LoginPage() {
   }, [showCustomDomain]);
 
   const handleSignupClick = () => {
-    console.log('회원가입 버튼 클릭됨');
+    // console.log('회원가입 버튼 클릭됨');
     router.push('/users/signup');
   };
 
   const handlePasswordResetClick = () => {
-    console.log('비밀번호 찾기 버튼 클릭됨');
+    // console.log('비밀번호 찾기 버튼 클릭됨');
     router.push('/users/reset-password');
   };
 

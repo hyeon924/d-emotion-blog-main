@@ -31,7 +31,7 @@ export default function PostListPage() {
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   if (!API_BASE_URL) {
-    console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
+    // console.error('NEXT_PUBLIC_API_BASE_URL이 설정되지 않았습니다.');
   }
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function PostListPage() {
       .then(async (res) => {
         if (!res.ok) throw new Error('글 목록 불러오기 실패');
         const data = await res.json();
-        console.log('응답 :', data);
+        // console.log('응답 :', data);
         setPosts(data.data.posts);
         setNickname(data.data.nickname);
       })
